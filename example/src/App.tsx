@@ -1,19 +1,31 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'circular-app-bar';
+import { CircularAppBar } from 'circular-app-bar';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+      <CircularAppBar
+        fabIconTint={'white'}
+        fabBackgroundTint={'#474667'}
+        itemBackgroundTints={['#4592a5', '#f83a7d', '#0a93f3']}
+        activeColor={'black'}
+        icons={[
+          <View style={{height:24, width:24, backgroundColor:'black'}}/>,
+          <View style={{height:24, width:24, backgroundColor:'black'}}/>,
+          <View style={{height:24, width:24, backgroundColor:'black'}}/>
+
+        ]}
+        triggers={[
+          () => {},
+          () => {},
+          () => {},
+        ]}
+      />   
+       </View>
   );
 }
 
