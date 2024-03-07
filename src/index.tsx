@@ -1,27 +1,27 @@
 import * as React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StyleSheet, View, Animated,  Dimensions, Pressable } from 'react-native';
-import { useRef, useState} from 'react';
+import { StyleSheet, View, Animated, Dimensions, Pressable, Image } from 'react-native';
+import { useRef, useState } from 'react';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { PanResponder } from 'react-native';
 import type { Float } from 'react-native/Libraries/Types/CodegenTypes';
 
 interface CircularAppBar {
-  fabIconTint: string;
-  fabBackgroundTint: string;
-  itemBackgroundTints?: string[];
-  activeColor: string;
-  icons?: JSX.Element[];
-  triggers?: (() => void)[];
+    fabIconTint: string;
+    fabBackgroundTint: string;
+    itemBackgroundTints?: string[];
+    activeColor: string;
+    icons?: JSX.Element[];
+    triggers?: (() => void)[];
 }
 
 export const CircularAppBar: React.FC<CircularAppBar> = ({
-  fabIconTint,
-  fabBackgroundTint,
-  itemBackgroundTints = [],
-  activeColor,
-  icons = [],
-  triggers = [()=>{},()=>{},()=>{}]
+    fabIconTint,
+    fabBackgroundTint,
+    itemBackgroundTints = [],
+    activeColor,
+    icons = [],
+    triggers = [() => { }, () => { }, () => { }]
 }) => {
 
 
@@ -43,7 +43,7 @@ export const CircularAppBar: React.FC<CircularAppBar> = ({
             onPanResponderMove: (_, gestureState) => {
                 setXY({ x: gestureState.dx, y: gestureState.dy })
             },
-            
+
         }),
     ).current;
 
@@ -87,16 +87,16 @@ export const CircularAppBar: React.FC<CircularAppBar> = ({
 
     gesture.onTouchesCancelled(() => {
         if (isInsideSquare(xy.x, xy.y, layout)) {
-          if(triggers[0])
-            triggers[0]()
+            if (triggers[0])
+                triggers[0]()
         }
         else if (isInsideSquare(xy.x, xy.y, layout2)) {
-          if(triggers[1])
-            triggers[1]()
+            if (triggers[1])
+                triggers[1]()
         }
         else if (isInsideSquare(xy.x, xy.y, layout3)) {
-          if(triggers[2])
-            triggers[2]()
+            if (triggers[2])
+                triggers[2]()
         }
         fadeIn()
     })
@@ -110,7 +110,7 @@ export const CircularAppBar: React.FC<CircularAppBar> = ({
 
 
     fabGesture.onTouchesDown(() => {
-        if((fadeAnim as any)._value) fadeOut()
+        if ((fadeAnim as any)._value) fadeOut()
         else fadeIn()
     })
 
@@ -170,70 +170,74 @@ export const CircularAppBar: React.FC<CircularAppBar> = ({
 
     return (
         <GestureHandlerRootView style={{ position: 'absolute', bottom: 0, right: 0 }}>
-             <View
+            <View
                 {...panResponder.panHandlers}
                 style={{ width: Dimensions.get('window').width * 0.6, position: 'absolute', bottom: 30, right: 30, height: Dimensions.get('window').width * 0.65 }}>
-                 <GestureDetector gesture={gesture}>
-                     <View style={{ width: '100%', height: '100%', alignItems: 'flex-end', justifyContent: 'flex-end',  position: 'relative'  }}>
-                         <Animated.View style={{ height: '100%', width: '100%', borderRadius: 16, opacity: fadeAnimModal, position: 'relative', transform: [{ scale: scale }, { translateX: position }, { translateY: position }] }}>
-                           
-                             {/* <Background /> */}
-                             {/* <SvgUri uri={logo} /> */}
+                <GestureDetector gesture={gesture}>
+                    <View style={{ width: '100%', height: '100%', alignItems: 'flex-end', justifyContent: 'flex-end', position: 'relative' }}>
+                        <Animated.View style={{ height: '100%', width: '100%', borderRadius: 16, opacity: fadeAnimModal, position: 'relative', transform: [{ scale: scale }, { translateX: position }, { translateY: position }] }}>
 
-                             <Pressable
-                                 onPress={() => {
-                                     fadeIn()
-                                     if(triggers[0])
-                                     triggers[0]()
-                                 }}
-                                 onLayout={(event) => {
-                                     setLayout({ height: event.nativeEvent.layout.y, width: event.nativeEvent.layout.x })
-                                 }}
-                                 style={[styles.item, { backgroundColor: isInsideSquare(xy.x, xy.y, layout) ? activeColor : itemBackgroundTints[0], left: '25%', bottom: '10%', }]}>
-                                 {icons[0]}
-                             </Pressable>
+                            {/* <SvgUri uri={logo} /> */}
+                            <Image
+                                style={{ width: '100%', height: '100%', objectFit:'contain' }}
+                                source={{ uri: 'https://Tabrez10XDev.github.io/cdn-public/CurvedAppBarBg.png' }}
+                                resizeMode={'cover'} // cover or contain its upto you view look
+                            />
+
                             <Pressable
-                                 onPress={() => {
-                                     fadeIn()
-                                     if(triggers[1])
-                                     triggers[1]()
-                                 }}
-                                 onLayout={(event) => {
-                                     setLayout2({ height: event.nativeEvent.layout.y, width: event.nativeEvent.layout.x })
-                                 }}
-                                 style={[styles.item, { backgroundColor: isInsideSquare(xy.x, xy.y, layout2) ? activeColor : itemBackgroundTints[1], left: '45%', bottom: '40%' }]}>
-                                 {icons[1]}
-                             </Pressable>
-                             <Pressable
-                                 onPress={() => {
-                                     fadeIn()
-                                     if(triggers[2])
-                                     triggers[2]()
-                                 }} onLayout={(event) => {
-                                     setLayout3({ height: event.nativeEvent.layout.y, width: event.nativeEvent.layout.x })
-                                 }}
-                                 style={[styles.item, { backgroundColor: isInsideSquare(xy.x, xy.y, layout3) ? activeColor : itemBackgroundTints[2], left: '70%', bottom: '60%' }]}>
-                                 {icons[2]}
-                             </Pressable>
-                         </Animated.View>
+                                onPress={() => {
+                                    fadeIn()
+                                    if (triggers[0])
+                                        triggers[0]()
+                                }}
+                                onLayout={(event) => {
+                                    setLayout({ height: event.nativeEvent.layout.y, width: event.nativeEvent.layout.x })
+                                }}
+                                style={[styles.item, { backgroundColor: isInsideSquare(xy.x, xy.y, layout) ? activeColor : itemBackgroundTints[0], left: '25%', bottom: '10%', }]}>
+                                {icons[0]}
+                            </Pressable>
+                            <Pressable
+                                onPress={() => {
+                                    fadeIn()
+                                    if (triggers[1])
+                                        triggers[1]()
+                                }}
+                                onLayout={(event) => {
+                                    setLayout2({ height: event.nativeEvent.layout.y, width: event.nativeEvent.layout.x })
+                                }}
+                                style={[styles.item, { backgroundColor: isInsideSquare(xy.x, xy.y, layout2) ? activeColor : itemBackgroundTints[1], left: '45%', bottom: '40%' }]}>
+                                {icons[1]}
+                            </Pressable>
+                            <Pressable
+                                onPress={() => {
+                                    fadeIn()
+                                    if (triggers[2])
+                                        triggers[2]()
+                                }} onLayout={(event) => {
+                                    setLayout3({ height: event.nativeEvent.layout.y, width: event.nativeEvent.layout.x })
+                                }}
+                                style={[styles.item, { backgroundColor: isInsideSquare(xy.x, xy.y, layout3) ? activeColor : itemBackgroundTints[2], left: '70%', bottom: '60%' }]}>
+                                {icons[2]}
+                            </Pressable>
+                        </Animated.View>
                         <GestureDetector
-                             gesture={fabGesture}>
-                             <View
-                                 style={[styles.fab, { backgroundColor: fabBackgroundTint }]}>
-                                 <Animated.View style={{ height: 2, width: '50%', backgroundColor: fabIconTint, opacity: fadeAnim }} />
+                            gesture={fabGesture}>
+                            <View
+                                style={[styles.fab, { backgroundColor: fabBackgroundTint }]}>
+                                <Animated.View style={{ height: 2, width: '50%', backgroundColor: fabIconTint, opacity: fadeAnim }} />
                                 <Animated.View style={{
-                                     transform: [{ rotateZ: rotate }],
-                                     height: isVisible ? 1 : 2, width: '50%', backgroundColor: fabIconTint, marginTop: '15%', opacity: 1
-                                 }} />
-                                 <Animated.View style={{
-                                     transform: [{ rotateZ: reverseRotate }],
-                                     height: isVisible ? 1 : 2, width: '50%', backgroundColor: fabIconTint, opacity: 1
-                                 }} />
-                                 <Animated.View style={{ height: 2, width: '50%', backgroundColor: fabIconTint, marginTop: '15%', opacity: fadeAnim }} />
+                                    transform: [{ rotateZ: rotate }],
+                                    height: isVisible ? 1 : 2, width: '50%', backgroundColor: fabIconTint, marginTop: '15%', opacity: 1
+                                }} />
+                                <Animated.View style={{
+                                    transform: [{ rotateZ: reverseRotate }],
+                                    height: isVisible ? 1 : 2, width: '50%', backgroundColor: fabIconTint, opacity: 1
+                                }} />
+                                <Animated.View style={{ height: 2, width: '50%', backgroundColor: fabIconTint, marginTop: '15%', opacity: fadeAnim }} />
                             </View>
-                         </GestureDetector>
+                        </GestureDetector>
                     </View>
-                 </GestureDetector>
+                </GestureDetector>
             </View>
         </GestureHandlerRootView>
     );
